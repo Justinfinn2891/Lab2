@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="table" params="prefix parent *origin">
+
+    <!-- Constants for robot dimensions -->
+    <xacro:property name="table_length" value="4" /> <!-- Square dimensions (widthxwidth) of beams -->
+    <xacro:property name="table_width" value="2" /> <!-- base_link -->
+    <xacro:property name="table_height" value="1" /> <!-- link1 -->
+    <xacro:property name="table_thickness" value=".05" /> <!-- link2 -->
+    <xacro:property name="leg_length" value="${table_height - table_thickness}" />
+    <xacro:property name="leg_radius" value ="0.05"/>
+
+    <joint name="${prefix}base_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}" />
+      <child link="${prefix}top" />
+    </joint>
+
+    <!-- Base Link -->
+    <link name="${prefix}top">
+      <visual>
+        <origin xyz="0 0 ${-table_thickness/2}" rpy="0 0 0" />
+        <geometry>
+          <box size="${table_width} ${table_length} ${table_thickness}" />
+        </geometry>
+        <material name="brown" />
+      </visual>
+    </link>
+
+    <joint name="${prefix}leg-table1" type="fixed">
+      <parent link="${prefix}top" />
+      <child link="${prefix}leg1" />
+      <origin xyz="${table_width/2 - leg_radius} ${table_length/2 - leg_radius} ${-leg_length/2 - table_thickness}" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <!-- Middle Link -->
+    <link name="${prefix}leg1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <cylinder radius="${leg_radius}" length="${leg_length}"/>
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+    </link>
+
+
+    <joint name="${prefix}leg-table2" type="fixed">
+      <parent link="${prefix}top" />
+      <child link="${prefix}leg2" />
+      <origin xyz="${-table_width/2 + leg_radius} ${-table_length/2 + leg_radius} ${-leg_length/2 - table_thickness}" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <!-- Middle Link -->
+    <link name="${prefix}leg2">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <cylinder radius="${leg_radius}" length="${leg_length}"/>
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+    </link>
+
+    <joint name="${prefix}leg-table3" type="fixed">
+      <parent link="${prefix}top" />
+      <child link="${prefix}leg3" />
+      <origin xyz="${-table_width/2 + leg_radius} ${table_length/2 - leg_radius} ${-leg_length/2 - table_thickness}" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+    </joint>
+ 
+    <!-- Middle Link -->
+    <link name="${prefix}leg3">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <cylinder radius="${leg_radius}" length="${leg_length}"/>
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+    </link>
+
+    <joint name="${prefix}leg-table4" type="fixed">
+      <parent link="${prefix}top" />
+      <child link="${prefix}leg4" />
+      <origin xyz="${table_width/2 - leg_radius} ${-table_length/2 + leg_radius} ${-leg_length/2 - table_thickness}" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <!-- Middle Link -->
+    <link name="${prefix}leg4">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <cylinder radius="${leg_radius}" length="${leg_length}"/>
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+    </link>
+
+
+  </xacro:macro>
+
+</robot>
